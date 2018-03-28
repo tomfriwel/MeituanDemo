@@ -97,7 +97,6 @@ export default class App extends Component<Props> {
     }
 
     addItem({ item }) {
-        // Alert.alert('You tapped the button!' + orderList.length+','+item.title);
         let obj
         let { orderList } = this.state
 
@@ -106,8 +105,6 @@ export default class App extends Component<Props> {
         })
 
         let index = keys.indexOf(item.key)
-
-        // Alert.alert(''+keys.length+', index='+index)
 
         if (index == -1) {
             obj = {
@@ -128,10 +125,6 @@ export default class App extends Component<Props> {
             orderList,
             total
         })
-
-        // if (index != -1) {
-        //   Alert.alert('add, count=' + this.state.orderList[index].count)
-        // }
     }
 
     renderItem({ item, index }) {
@@ -264,7 +257,15 @@ export default class App extends Component<Props> {
                         })
                     }}>
                     <View style={styles.bottomActionBar}>
-                        <Text>{this.state.total}</Text>
+                        <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
+                            <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
+                            <Text style={styles.bottomBarTotalPriceInfo}>另需配送费$5</Text>
+                        </View>
+                        <TouchableWithoutFeedback>
+                            <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
+                                <Text style={styles.bottomBarCountTitle}>结算</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -321,6 +322,30 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: '#4F4F4F'
     },
+    bottomBarTotalPriceWrapper: {
+        left: 68,
+        display: 'flex',
+        // flexGrow:0,
+        // alignContent:'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: 100,
+        height: '100%',
+    },
+    bottomBarCount: {
+        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: 0,
+        width: 111,
+        height: '100%',
+        backgroundColor: '#fece5a'
+    },
+    bottomBarCountTitle: {
+        color: '#333431',
+        fontSize: 15
+    },
     bottomList: {
         position: 'absolute',
         width: '100%',
@@ -356,5 +381,14 @@ const styles = StyleSheet.create({
         left: 0,
         top: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.8)'
-    }
+    },
+    bottomBarTotalPrice: {
+        color: '#fff',
+        fontWeight: '700',
+        fontSize: 18,
+    },
+    bottomBarTotalPriceInfo: {
+        color: '#aaa',
+        fontSize: 11,
+    },
 });
