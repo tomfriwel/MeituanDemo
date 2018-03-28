@@ -71,7 +71,7 @@ export default class App extends Component<Props> {
     hiddenH: 52,
     showH: 300,
     orderList: [],
-    classList:[
+    classList: [
       {
         key: '1',
         title: '开胃冷菜'
@@ -143,7 +143,7 @@ export default class App extends Component<Props> {
         volume={item.volume}
         price={item.price}
         like={item.like}
-        onAdd={(item) => this.addItem({item})}
+        onAdd={(res) => this.addItem({ item })}
       />
     )
   }
@@ -151,9 +151,8 @@ export default class App extends Component<Props> {
   renderOrder({ item, index }) {
     return (
       <SelectedItem
-        // data={item}
         key={item.key}
-        count={item.count}
+        data={item}
       ></SelectedItem>
       // <View>
       //   <Text>{item.isLike?'like':'unlike'}</Text>
@@ -250,6 +249,7 @@ export default class App extends Component<Props> {
             style={styles.orderList}
             data={this.state.orderList}
             renderItem={this.renderOrder}
+            extraData={this.state}
           />
         </View>
 

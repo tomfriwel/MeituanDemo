@@ -10,6 +10,7 @@ import {
 export default class SelectedItem extends Component {    
     constructor(props) {
         super(props)
+        console.log(props.data.key)
         this.state = {
             data:this.props.data
         }
@@ -17,7 +18,7 @@ export default class SelectedItem extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>{this.state.data.count}</Text>
+                <Text style={{color: this.state.data.isLike?'red':'gray'}}>{this.state.data.count}</Text>
             </View>
         )
     }
