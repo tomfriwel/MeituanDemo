@@ -67,6 +67,7 @@ class FadeInView extends React.Component {
 type Props = {};
 export default class App extends Component<Props> {
   state = {
+    total: 0,
     isShow: false,
     hiddenH: 52,
     showH: 300,
@@ -113,17 +114,16 @@ export default class App extends Component<Props> {
         count: 1,
         item: item,
         key: item.key,
-        isLike: false
       }
       orderList.push(obj)
-      // this.state.orderState.list.push(obj)
-      // Alert.alert('new add')
     }
     else {
-      orderList[index].isLike = !orderList[index].isLike
       orderList[index].count++
-      // Alert.alert('add, count=' + orderList[index].count)
     }
+
+    let total = orderList.map((item)=>{
+      return item.count * item.item.price
+    })
 
     this.setState({
       orderList
@@ -154,9 +154,6 @@ export default class App extends Component<Props> {
         key={item.key}
         data={item}
       ></SelectedItem>
-      // <View>
-      //   <Text>{item.isLike?'like':'unlike'}</Text>
-      // </View>
     )
   }
 
@@ -244,7 +241,10 @@ export default class App extends Component<Props> {
         </TouchableWithoutFeedback>
 
         <View style={[styles.bottomList, { height: this.state.isShow ? this.state.showH : this.state.hiddenH }]}>
-          <Text style={styles.bottomListTitle}>已选商品</Text>
+          <View style={styles.bottomListTitleBar}>
+            <Text style={styles.bottomListTitle}>已选商品</Text>
+            <Text style={styles.bottomListClear}>清空购物车</Text>
+          </View>
           <FlatList
             style={styles.orderList}
             data={this.state.orderList}
@@ -328,13 +328,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.97)',
     paddingBottom: 52
   },
-  bottomListTitle: {
-    paddingLeft: 10,
+  bottomListTitleBar: {
+    width: '100%',
     height: 31,
-    lineHeight: 31,
-    fontSize: 12,
-    color: '#666666',
     backgroundColor: '#f4f4f4'
+  },
+  bottomListTitle: {
+    position:'absolute',
+    left:10,
+    fontSize: 12,
+    lineHeight:31,
+    color: '#666666',
+  },
+  bottomListClear: {
+    position:'absolute',
+    right: 10,
+    fontSize: 12,
+    lineHeight:31,
+    color: '#666666',
   },
   cover: {
     position: 'absolute',

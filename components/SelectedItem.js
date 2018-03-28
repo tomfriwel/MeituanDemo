@@ -18,7 +18,11 @@ export default class SelectedItem extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={{color: this.state.data.isLike?'red':'gray'}}>{this.state.data.count}</Text>
+                <View style={styles.info}>
+                    <Text style={styles.title}>{this.state.data.item.title}</Text>
+                    <Text style={styles.subtitle}>微辣</Text>
+                </View>
+                <Text>{this.state.data.count}</Text>
             </View>
         )
     }
@@ -30,7 +34,21 @@ const styles = StyleSheet.create({
         height: 61,
         flex: 1,
         flexDirection: 'row',
-        // borderBottomWidth:1,
-        // borderBottomColor:'#f0f0f0',
+        alignItems:'center',
+        paddingLeft:13,
+        // justifyContent:'center'
+        borderBottomWidth:1,
+        borderBottomColor:'#f0f0f0',
     },
+    info: {
+
+    },
+    title: {
+        fontWeight:'500',
+        color:'#333'
+    },
+    subtitle: {
+        marginTop:8,
+        color:'#999'
+    }
 })
