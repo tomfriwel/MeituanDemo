@@ -8,10 +8,16 @@ import {
 } from 'react-native';
 
 export default class SelectedItem extends Component {    
+    constructor(props) {
+        super(props)
+        this.state = {
+            data:this.props.data
+        }
+    }
     render() {
         return (
             <View style={styles.container}>
-                <Text>{this.props.data.count}</Text>
+                <Text>{this.state.data.count}</Text>
             </View>
         )
     }

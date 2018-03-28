@@ -70,8 +70,96 @@ export default class App extends Component<Props> {
     isShow: false,
     hiddenH: 52,
     showH: 300,
-    orderList: []
-  };
+    orderList: [],
+    classList:[
+      {
+        key: '1',
+        title: '开胃冷菜'
+      },
+      {
+        key: '2',
+        title: '开胃冷菜'
+      },
+      {
+        key: '3',
+        title: '开胃冷菜'
+      },
+      {
+        key: '4',
+        title: '开胃冷菜'
+      },
+      {
+        key: '5',
+        title: '开胃冷菜'
+      }
+    ]
+  }
+
+  addItem({ item }) {
+    // Alert.alert('You tapped the button!' + orderList.length+','+item.title);
+    let obj
+    let { orderList } = this.state
+
+    let keys = orderList.map((item) => {
+      return item.key
+    })
+
+    let index = keys.indexOf(item.key)
+
+    // Alert.alert(''+keys.length+', index='+index)
+
+    if (index == -1) {
+      obj = {
+        count: 1,
+        item: item,
+        key: item.key,
+        isLike: false
+      }
+      orderList.push(obj)
+      // this.state.orderState.list.push(obj)
+      // Alert.alert('new add')
+    }
+    else {
+      orderList[index].isLike = !orderList[index].isLike
+      orderList[index].count++
+      // Alert.alert('add, count=' + orderList[index].count)
+    }
+
+    this.setState({
+      orderList
+    })
+
+    // if (index != -1) {
+    //   Alert.alert('add, count=' + this.state.orderList[index].count)
+    // }
+  }
+
+  renderItem({ item, index }) {
+    return (
+      <ShopItem
+        key={item.key}
+        source={item.source}
+        title={item.title}
+        volume={item.volume}
+        price={item.price}
+        like={item.like}
+        onAdd={(item) => this.addItem({item})}
+      />
+    )
+  }
+
+  renderOrder({ item, index }) {
+    return (
+      <SelectedItem
+        // data={item}
+        key={item.key}
+        count={item.count}
+      ></SelectedItem>
+      // <View>
+      //   <Text>{item.isLike?'like':'unlike'}</Text>
+      // </View>
+    )
+  }
 
   render() {
     let pic = require('./assets/images/sample.jpg')
@@ -120,78 +208,6 @@ export default class App extends Component<Props> {
       }
     ]
 
-    // let images = []
-    let classList = [
-      {
-        key: '1',
-        title: '开胃冷菜'
-      },
-      {
-        key: '2',
-        title: '开胃冷菜'
-      },
-      {
-        key: '3',
-        title: '开胃冷菜'
-      },
-      {
-        key: '4',
-        title: '开胃冷菜'
-      },
-      {
-        key: '5',
-        title: '开胃冷菜'
-      }
-    ]
-
-    function addItem(item) {
-      // Alert.alert('You tapped the button!' + orderList.length+','+item.title);
-      let obj
-      let orderList = this.state.orderList
-
-      let keys = orderList.map((item) => {
-        return item.key
-      })
-
-      let index = keys.indexOf(item.key)
-
-      // Alert.alert(''+keys.length+', index='+index)
-
-      if (index == -1) {
-        obj = {
-          count: 1,
-          item: item,
-          key:item.key
-        }
-        orderList.push(obj)
-        // this.state.orderState.list.push(obj)
-        // Alert.alert('new add')
-      }
-      else {
-        orderList[index].count++
-        // Alert.alert('add, count=' + orderList[index].count)
-        // for (let index in orderList) {
-        //   if (orderList[index].item.key == item.key) {
-        //     orderList[index].count++
-
-        //   }
-        // }
-      }
-
-      this.setState({
-        orderList: orderList
-      })
-    }
-
-    // for (let i = 0; i < pics.length; i++) {
-    //   images.push(
-    //     <ShopItem
-    //       key={i}
-    //       source={pics[i].pic}
-    //       description={pics[i].description}
-    //     />
-    //   )
-    // }
     var CustomLayoutAnimation = {
       duration: 300,
       update: {
@@ -204,7 +220,7 @@ export default class App extends Component<Props> {
         <View style={styles.flowContainer}>
           <FlatList
             style={styles.classList}
-            data={classList}
+            data={this.state.classList}
             renderItem={({ item }) =>
               <View style={styles.classItemContainer}>
                 <Text style={styles.classItem}>{item.title}</Text>
@@ -214,30 +230,18 @@ export default class App extends Component<Props> {
           <FlatList
             style={styles.itemList}
             data={pics}
-            renderItem={({ item }) =>
-              <ShopItem
-                key={item.key}
-                source={item.source}
-                title={item.title}
-                volume={item.volume}
-                price={item.price}
-                like={item.like}
-                onAdd={(res) => {
-                  addItem.apply(this, [item])
-                }}
-              />
-            }
+            renderItem={({ item }) => this.renderItem({ item })}
           />
         </View>
 
         <TouchableWithoutFeedback
-          onPress={()=>{
+          onPress={() => {
             this.setState({
-              isShow:!this.state.isShow
+              isShow: !this.state.isShow
             })
           }}
         >
-          <View style={[styles.cover, {display:this.state.isShow?'flex':'none'}]}></View>
+          <View style={[styles.cover, { display: this.state.isShow ? 'flex' : 'none' }]}></View>
         </TouchableWithoutFeedback>
 
         <View style={[styles.bottomList, { height: this.state.isShow ? this.state.showH : this.state.hiddenH }]}>
@@ -245,11 +249,7 @@ export default class App extends Component<Props> {
           <FlatList
             style={styles.orderList}
             data={this.state.orderList}
-            renderItem={({ item }) =>
-              <SelectedItem
-                data={item}
-              ></SelectedItem>
-            }
+            renderItem={this.renderOrder}
           />
         </View>
 
@@ -342,6 +342,6 @@ const styles = StyleSheet.create({
     height: '100%',
     left: 0,
     top: 0,
-    backgroundColor:'rgba(0, 0, 0, 0.8)'
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
   }
 });

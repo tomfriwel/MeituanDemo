@@ -29,7 +29,7 @@ export default class ShopItem extends Component {
                 <TouchableOpacity
                     style={styles.itemActionWrapper}
                     onPress={()=>{
-                        this.props.onAdd(this.props.title)
+                        this.props.onAdd({item:this.props.title})
                     }}>
                     <LinearGradient
                         style={styles.itemAction}
