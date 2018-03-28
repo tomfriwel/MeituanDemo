@@ -165,11 +165,11 @@ export default class App extends Component<Props> {
         }
         orderList.push(obj)
         // this.state.orderState.list.push(obj)
-        Alert.alert('new add')
+        // Alert.alert('new add')
       }
       else {
         orderList[index].count++
-        Alert.alert('add, count=' + orderList[index].count)
+        // Alert.alert('add, count=' + orderList[index].count)
         // for (let index in orderList) {
         //   if (orderList[index].item.key == item.key) {
         //     orderList[index].count++
@@ -230,13 +230,25 @@ export default class App extends Component<Props> {
           />
         </View>
 
+        <TouchableWithoutFeedback
+          onPress={()=>{
+            this.setState({
+              isShow:!this.state.isShow
+            })
+          }}
+        >
+          <View style={[styles.cover, {display:this.state.isShow?'flex':'none'}]}></View>
+        </TouchableWithoutFeedback>
+
         <View style={[styles.bottomList, { height: this.state.isShow ? this.state.showH : this.state.hiddenH }]}>
           <Text style={styles.bottomListTitle}>已选商品</Text>
           <FlatList
             style={styles.orderList}
             data={this.state.orderList}
             renderItem={({ item }) =>
-              <SelectedItem></SelectedItem>
+              <SelectedItem
+                data={item}
+              ></SelectedItem>
             }
           />
         </View>
@@ -323,5 +335,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666666',
     backgroundColor: '#f4f4f4'
+  },
+  cover: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    left: 0,
+    top: 0,
+    backgroundColor:'rgba(0, 0, 0, 0.8)'
   }
 });

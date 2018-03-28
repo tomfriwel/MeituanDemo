@@ -7,11 +7,11 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-export default class SelectedItem extends Component {
+export default class SelectedItem extends Component {    
     render() {
         return (
             <View style={styles.container}>
-                <Text>123</Text>
+                <Text>{this.props.data.count}</Text>
             </View>
         )
     }
