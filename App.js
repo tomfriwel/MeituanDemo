@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 import ShopItem from './components/ShopItem'
 import SelectedItem from './components/SelectedItem'
+import LinearGradient from 'react-native-linear-gradient'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' +
@@ -259,12 +260,17 @@ export default class App extends Component<Props> {
                     <View style={styles.bottomActionBar}>
                         <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                             <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
-                            <Text style={styles.bottomBarTotalPriceInfo}>另需配送费$5</Text>
+                            <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
                         </View>
                         <TouchableWithoutFeedback>
-                            <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
+                            {/* <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                                 <Text style={styles.bottomBarCountTitle}>结算</Text>
-                            </View>
+                            </View> */}
+                            <LinearGradient
+                                style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}
+                                colors={['#fecf58', '#fec841']}>
+                                <Text style={styles.bottomBarCountTitle}>结算</Text>
+                            </LinearGradient>
                         </TouchableWithoutFeedback>
                     </View>
                 </TouchableWithoutFeedback>
