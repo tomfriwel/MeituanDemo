@@ -23,46 +23,11 @@ import SelectedItem from './components/SelectedItem'
 import AnimationTest from './components/AnimationTest'
 import LinearGradient from 'react-native-linear-gradient'
 
-
 const Dimensions = require('Dimensions');
-
 const window = Dimensions.get('window');
 
-class FadeInView extends React.Component {
-    state = {
-        fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
-    }
-
-    componentDidMount() {
-        Animated.timing(                  // Animate over time
-            this.state.fadeAnim,            // The animated value to drive
-            {
-                toValue: 1,                   // Animate to opacity: 1 (opaque)
-                duration: 10000,              // Make it take a while
-            }
-        ).start();                        // Starts the animation
-    }
-
-    render() {
-        let { fadeAnim } = this.state;
-
-        return (
-            <Animated.View                 // Special animatable View
-                style={{
-                    ...this.props.style,
-                    opacity: fadeAnim,         // Bind opacity to animated value
-                }}
-            >
-                {this.props.children}
-            </Animated.View>
-        );
-    }
-}
-
-
-type Props = {};
 // export default AnimationTest
-export default class App extends Component<Props> {
+export default class App extends Component {
     state = {
         fadeAnim: new Animated.Value(0.0),
         total: 0,
@@ -152,9 +117,7 @@ export default class App extends Component<Props> {
             <SelectedItem
                 key={item.key}
                 data={item}
-                onAdd={() => {
-                    console.log('selected item add')
-                }}
+                onAdd={(res) => this.addItem({item})}
                 onReduce={() => {
                     console.log('selected item reduce')
                 }}
@@ -162,10 +125,12 @@ export default class App extends Component<Props> {
         )
     }
 
+    // control order list show/hide animation when press
     orderListAnimation() {
+        if(this.state.total==0) {
+            return
+        }
         let isShow = this.state.isShow
-
-        console.log(this.state.fadeAnim)
 
         Animated.timing(
             this.state.fadeAnim, {
@@ -173,14 +138,11 @@ export default class App extends Component<Props> {
                 toValue: !isShow ? 1 : 0
             }
         ).start(() => {
-            console.log(isShow)
             this.setState({
                 showCover: !isShow
             });
         });
 
-        // isShow = false
-        // isShow = true
         this.setState({
             isShow: !isShow,
             showCover: true
@@ -284,7 +246,8 @@ export default class App extends Component<Props> {
                     <FlatList
                         style={styles.orderList}
                         data={this.state.orderList}
-                        renderItem={this.renderOrder}
+                        renderItem={({item})=>this.renderOrder({item})}
+                        // renderItem={this.renderOrder}
                         extraData={this.state}
                     />
                 </Animated.View>
