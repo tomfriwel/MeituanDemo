@@ -98,7 +98,73 @@ export default class App extends Component {
         })
     }
 
-    renderItem({ item, index }) {
+    reduceItem({ item }) {
+        console.log('reduce')
+        let obj
+        let { orderList } = this.state
+
+        let keys = orderList.map((item) => {
+            return item.key
+        })
+
+        let index = keys.indexOf(item.key)
+
+        if (index != -1 && orderList[index].count > 0) {
+            orderList[index].count--
+
+            let total = this.state.total
+            total -= item.price
+
+            let needHide = false
+            if (orderList[index].count == 0) {
+                orderList.splice(index, 1)
+                
+                if(orderList.length==0) {
+                    needHide = true
+                }
+            }
+
+            this.setState({
+                orderList,
+                total
+            }, ()=>{
+                // 如果为空, 就隐藏购物车
+                if(needHide) {
+                    this.orderListAnimation()
+                }
+            })
+        }
+    }
+
+    // control order list show/hide animation when press
+    orderListAnimation() {
+        let isShow = this.state.isShow
+
+        if (this.state.total == 0 && !isShow) {
+            return
+        }
+        else if(this.state.total == 0 && isShow) {
+
+        }
+
+        Animated.timing(
+            this.state.fadeAnim, {
+                duration: 400,
+                toValue: !isShow ? 1 : 0
+            }
+        ).start(() => {
+            this.setState({
+                showCover: !isShow
+            });
+        });
+
+        this.setState({
+            isShow: !isShow,
+            showCover: true
+        });
+    }
+
+    renderShopItem({ item, index }) {
         return (
             <ShopItem
                 key={item.key}
@@ -117,36 +183,10 @@ export default class App extends Component {
             <SelectedItem
                 key={item.key}
                 data={item}
-                onAdd={(res) => this.addItem({item})}
-                onReduce={() => {
-                    console.log('selected item reduce')
-                }}
+                onAdd={(res) => this.addItem({ item: item.item })}
+                onReduce={(res) => this.reduceItem({ item: item.item })}
             ></SelectedItem>
         )
-    }
-
-    // control order list show/hide animation when press
-    orderListAnimation() {
-        if(this.state.total==0) {
-            return
-        }
-        let isShow = this.state.isShow
-
-        Animated.timing(
-            this.state.fadeAnim, {
-                duration: 400,
-                toValue: !isShow ? 1 : 0
-            }
-        ).start(() => {
-            this.setState({
-                showCover: !isShow
-            });
-        });
-
-        this.setState({
-            isShow: !isShow,
-            showCover: true
-        });
     }
 
     render() {
@@ -211,7 +251,7 @@ export default class App extends Component {
                     <FlatList
                         style={styles.itemList}
                         data={allItems}
-                        renderItem={({ item }) => this.renderItem({ item })}
+                        renderItem={({ item }) => this.renderShopItem({ item })}
                     />
                 </View>
 
@@ -246,7 +286,7 @@ export default class App extends Component {
                     <FlatList
                         style={styles.orderList}
                         data={this.state.orderList}
-                        renderItem={({item})=>this.renderOrder({item})}
+                        renderItem={({ item }) => this.renderOrder({ item })}
                         // renderItem={this.renderOrder}
                         extraData={this.state}
                     />
