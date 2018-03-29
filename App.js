@@ -35,6 +35,7 @@ export default class App extends Component {
         showCover: false,
         hiddenH: 52,
         showH: 300,
+        minimum: 20, //起送价
         orderList: [],
         classList: [
             {
@@ -118,8 +119,8 @@ export default class App extends Component {
             let needHide = false
             if (orderList[index].count == 0) {
                 orderList.splice(index, 1)
-                
-                if(orderList.length==0) {
+
+                if (orderList.length == 0) {
                     needHide = true
                 }
             }
@@ -127,9 +128,9 @@ export default class App extends Component {
             this.setState({
                 orderList,
                 total
-            }, ()=>{
+            }, () => {
                 // 如果为空, 就隐藏购物车
-                if(needHide) {
+                if (needHide) {
                     this.orderListAnimation()
                 }
             })
@@ -143,7 +144,7 @@ export default class App extends Component {
         if (this.state.total == 0 && !isShow) {
             return
         }
-        else if(this.state.total == 0 && isShow) {
+        else if (this.state.total == 0 && isShow) {
 
         }
 
@@ -164,6 +165,7 @@ export default class App extends Component {
         });
     }
 
+    // 购物item
     renderShopItem({ item, index }) {
         return (
             <ShopItem
@@ -178,6 +180,7 @@ export default class App extends Component {
         )
     }
 
+    // 购物车item
     renderOrder({ item, index }) {
         return (
             <SelectedItem
@@ -187,6 +190,43 @@ export default class App extends Component {
                 onReduce={(res) => this.reduceItem({ item: item.item })}
             ></SelectedItem>
         )
+    }
+
+    renderBottomLogo() {
+        let colors = ['#959595', '#6D6D6D']
+        if(this.state.total>0) {
+            colors = ['#FFDA88', '#FDC147']
+        }
+        return (
+            <LinearGradient
+                style={[styles.bottomLogo, {}]}
+                colors={colors}>
+            </LinearGradient>
+        )
+    }
+
+    // 结算按钮
+    renderCountButton() {
+        if (this.state.total > this.state.minimum) {
+            return (
+                <LinearGradient
+                    // , { display: this.state.total > 0 ? 'flex' : 'none' }
+                    style={[styles.bottomBarCount, {}]}
+                    colors={['#fecf58', '#fec841']}>
+                    <Text style={[styles.bottomBarCountTitle, { color: '#333431' }]}>结算</Text>
+                </LinearGradient>
+            )
+        }
+        else {
+            return (
+                <View
+                    style={[styles.bottomBarCount, {}]}
+                >
+                    <Text style={[styles.bottomBarCountTitle, { color: '#bab9b9' }]}>{'￥' + (this.state.minimum - this.state.total) + '起送'}</Text>
+                </View>
+
+            )
+        }
     }
 
     render() {
@@ -297,7 +337,7 @@ export default class App extends Component {
                         this.orderListAnimation()
                     }}>
                     <View style={styles.bottomActionBar}>
-                        <View style={styles.bottomLogo}></View>
+                        {this.renderBottomLogo()}
                         <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                             <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
                             <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
@@ -306,11 +346,7 @@ export default class App extends Component {
                             {/* <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                                 <Text style={styles.bottomBarCountTitle}>结算</Text>
                             </View> */}
-                            <LinearGradient
-                                style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}
-                                colors={['#fecf58', '#fec841']}>
-                                <Text style={styles.bottomBarCountTitle}>结算</Text>
-                            </LinearGradient>
+                            {this.renderCountButton()}
                         </TouchableWithoutFeedback>
                     </View>
                 </TouchableWithoutFeedback>
@@ -398,11 +434,11 @@ const styles = StyleSheet.create({
         right: 0,
         width: 111,
         height: '100%',
-        backgroundColor: '#fece5a'
+        // backgroundColor: '#fece5a'
     },
     bottomBarCountTitle: {
-        color: '#333431',
-        fontSize: 15
+        fontSize: 15,
+        fontWeight: '600'
     },
     bottomList: {
         position: 'absolute',
@@ -448,6 +484,6 @@ const styles = StyleSheet.create({
         width: 51,
         height: 51,
         borderRadius: 25.5,
-        backgroundColor: '#aa7723'
+        // backgroundColor: '#aa7723'
     }
 });
