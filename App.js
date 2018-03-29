@@ -147,6 +147,12 @@ export default class App extends Component<Props> {
             <SelectedItem
                 key={item.key}
                 data={item}
+                onAdd={()=>{
+                    console.log('selected item add')
+                }}
+                onReduce={()=>{
+                    console.log('selected item reduce')
+                }}
             ></SelectedItem>
         )
     }
@@ -156,7 +162,7 @@ export default class App extends Component<Props> {
         let pic2 = {
             uri: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
         }
-        let pics = [
+        let allItems = [
             {
                 key: '1',
                 source: pic,
@@ -219,7 +225,7 @@ export default class App extends Component<Props> {
                     />
                     <FlatList
                         style={styles.itemList}
-                        data={pics}
+                        data={allItems}
                         renderItem={({ item }) => this.renderItem({ item })}
                     />
                 </View>
@@ -258,6 +264,7 @@ export default class App extends Component<Props> {
                         })
                     }}>
                     <View style={styles.bottomActionBar}>
+                        <View style={styles.bottomLogo}></View>
                         <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                             <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
                             <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
@@ -329,6 +336,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4F4F4F'
     },
     bottomBarTotalPriceWrapper: {
+        position:'absolute',
         left: 68,
         display: 'flex',
         // flexGrow:0,
@@ -397,4 +405,13 @@ const styles = StyleSheet.create({
         color: '#aaa',
         fontSize: 11,
     },
+    bottomLogo: {
+        position:'absolute',
+        left:10,
+        top:-10,
+        width:51,
+        height:51,
+        borderRadius:25.5,
+        backgroundColor:'#aa7723'
+    }
 });

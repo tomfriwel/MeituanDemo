@@ -24,17 +24,29 @@ export default class SelectedItem extends Component {
                     <Text style={styles.subtitle}>微辣</Text>
                 </View>
                 <View style={styles.rightContainer}>
-                    <LinearGradient
-                        style={styles.itemAction}
-                        colors={['#fecf58', '#fec02a']}>
-                        <Text style={styles.itemActionText}>+</Text>
-                    </LinearGradient>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.onAdd({})
+                        }}
+                    >
+                        <LinearGradient
+                            style={styles.itemAction}
+                            colors={['#fecf58', '#fec02a']}>
+                            <Text style={styles.itemActionText}>+</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
                     <Text style={styles.itemCount}>{this.state.data.count}</Text>
-                    <View style={styles.itemActionReduce}>
-                        <Text style={styles.itemActionText}>-</Text>
-                    </View>
-                    <Text style={styles.itemTotal}>￥{this.state.data.count*this.state.data.item.price}</Text>
-                    
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.onReduce({})
+                        }}
+                    >
+                        <View style={styles.itemActionReduce}>
+                            <Text style={styles.itemActionText}>-</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.itemTotal}>￥{this.state.data.count * this.state.data.item.price}</Text>
+
                 </View>
             </View>
         )
@@ -60,7 +72,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row-reverse',
         alignItems: 'center',
-        justifyContent:'flex-end',
+        justifyContent: 'flex-end',
     },
     info: {
 
@@ -86,8 +98,8 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26,
         borderRadius: 13,
-        borderWidth:1,
-        borderColor:'#dcdcdc',
+        borderWidth: 1,
+        borderColor: '#dcdcdc',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -98,14 +110,14 @@ const styles = StyleSheet.create({
         fontSize: 22,
         lineHeight: 25
     },
-    itemCount:{
-        width:25,
-        textAlign:'center'
+    itemCount: {
+        width: 25,
+        textAlign: 'center'
     },
-    itemTotal:{
-        marginRight:34,
+    itemTotal: {
+        marginRight: 34,
         fontWeight: '500',
-        fontSize:13,
-        color:'#333'
+        fontSize: 13,
+        color: '#333'
     }
 })
