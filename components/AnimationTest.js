@@ -59,9 +59,26 @@ class FadeInView extends React.Component {
 
 export default class AnimationTest extends Component {
     state = {
-        isShow: false,
-        height:100
+        fadeAnim: Object,
+        heightAnim: Object,
+        currentAlpha: Object,
     }
+    constructor(props) {
+        super(props);
+        this.state = {//设置初值
+            currentAlpha: 1.0,//标志位，记录当前value
+            fadeAnim: new Animated.Value(1.0),
+            heightAnim:new Animated.Value(44.0)
+        };
+    }
+
+    // componentDidMount() {
+    //     Animated.timing(
+    //         this.state.fadeAnim,//初始值
+    //         { toValue: 1 }//结束值
+    //     ).start();//开始
+    // }
+
     animation() {
         LayoutAnimation.configureNext({
             duration: 1300, //持续时间
@@ -75,17 +92,54 @@ export default class AnimationTest extends Component {
         }, () => {
             console.log('end')
         });
-        this.
+        this.setState({
+            isShow: !this.state.isShow
+        })
     }
+
+    animation2() {
+        this.setState({
+            isShow: !this.state.isShow
+        })
+        Animated.timing(
+            this.state.fadeAnim,//初始值
+            { toValue: this.state.isShow ? 1 : 0 }//结束值
+        ).start();//开始
+
+    }
+
+    startAnimation() {
+        this.state.currentAlpha = this.state.currentAlpha == 1.0 ? 0.0 : 1.0;
+        Animated.timing(
+            this.state.fadeAnim,
+            { toValue: this.state.currentAlpha }
+        ).start();
+        Animated.timing(
+            this.state.heightAnim,
+            {toValue: this.state.currentAlpha==1.0?100:44}
+        ).start()
+    }
+
+
     render() {
         return (
             <View style={styles.pageContainer}>
                 <Button
                     title="click"
-                    onPress={()=>{
-                        this.animation()
+                    onPress={() => {
+                        this.startAnimation()
                     }}
                 ></Button>
+                {/* <View style={[styles.view, { opacity: this.state.isShow ? 1 : 0.2, height: this.state.isShow ? 200 : 44 }]}></View> */}
+                <Animated.View style={[styles.view, {
+                    opacity: this.state.fadeAnim,
+                    // height: this.state.heightAnim,
+                    height: this.state.fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [60, 110] //线性插值，0对应60，0.6对应30，1对应0
+                    }),
+                }]}>
+                </Animated.View>
             </View>
         );
     }
@@ -101,4 +155,10 @@ const styles = StyleSheet.create({
         height: window.height - 20,
         // backgroundColor: 'red'
     },
+    view: {
+        marginTop: 44,
+        width: 100,
+        height: 44,
+        backgroundColor: '#aaa'
+    }
 });
