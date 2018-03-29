@@ -61,249 +61,273 @@ class FadeInView extends React.Component {
 
 
 type Props = {};
-export default AnimationTest
-// export default class App extends Component<Props> {
-//     state = {
-//         total: 0,
-//         isShow: false,
-//         showCover: false,
-//         hiddenH: 52,
-//         showH: 300,
-//         orderList: [],
-//         classList: [
-//             {
-//                 key: '1',
-//                 title: '开胃冷菜'
-//             },
-//             {
-//                 key: '2',
-//                 title: '开胃冷菜'
-//             },
-//             {
-//                 key: '3',
-//                 title: '开胃冷菜'
-//             },
-//             {
-//                 key: '4',
-//                 title: '开胃冷菜'
-//             },
-//             {
-//                 key: '5',
-//                 title: '开胃冷菜'
-//             }
-//         ]
-//     }
+// export default AnimationTest
+export default class App extends Component<Props> {
+    state = {
+        fadeAnim: new Animated.Value(0.0),
+        total: 0,
+        isShow: false,
+        showCover: false,
+        hiddenH: 52,
+        showH: 300,
+        orderList: [],
+        classList: [
+            {
+                key: '1',
+                title: '开胃冷菜'
+            },
+            {
+                key: '2',
+                title: '开胃冷菜'
+            },
+            {
+                key: '3',
+                title: '开胃冷菜'
+            },
+            {
+                key: '4',
+                title: '开胃冷菜'
+            },
+            {
+                key: '5',
+                title: '开胃冷菜'
+            }
+        ]
+    }
 
-//     addItem({ item }) {
-//         let obj
-//         let { orderList } = this.state
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         fadeAnim: new Animated.Value(0.0),
+    //     };
+    // }
 
-//         let keys = orderList.map((item) => {
-//             return item.key
-//         })
+    addItem({ item }) {
+        let obj
+        let { orderList } = this.state
 
-//         let index = keys.indexOf(item.key)
+        let keys = orderList.map((item) => {
+            return item.key
+        })
 
-//         if (index == -1) {
-//             obj = {
-//                 count: 1,
-//                 item: item,
-//                 key: item.key,
-//             }
-//             orderList.push(obj)
-//         }
-//         else {
-//             orderList[index].count++
-//         }
+        let index = keys.indexOf(item.key)
 
-//         let total = this.state.total
-//         total += item.price
+        if (index == -1) {
+            obj = {
+                count: 1,
+                item: item,
+                key: item.key,
+            }
+            orderList.push(obj)
+        }
+        else {
+            orderList[index].count++
+        }
 
-//         this.setState({
-//             orderList,
-//             total
-//         })
-//     }
+        let total = this.state.total
+        total += item.price
 
-//     renderItem({ item, index }) {
-//         return (
-//             <ShopItem
-//                 key={item.key}
-//                 source={item.source}
-//                 title={item.title}
-//                 volume={item.volume}
-//                 price={item.price}
-//                 like={item.like}
-//                 onAdd={(res) => this.addItem({ item })}
-//             />
-//         )
-//     }
+        this.setState({
+            orderList,
+            total
+        })
+    }
 
-//     renderOrder({ item, index }) {
-//         return (
-//             <SelectedItem
-//                 key={item.key}
-//                 data={item}
-//                 onAdd={() => {
-//                     console.log('selected item add')
-//                 }}
-//                 onReduce={() => {
-//                     console.log('selected item reduce')
-//                 }}
-//             ></SelectedItem>
-//         )
-//     }
+    renderItem({ item, index }) {
+        return (
+            <ShopItem
+                key={item.key}
+                source={item.source}
+                title={item.title}
+                volume={item.volume}
+                price={item.price}
+                like={item.like}
+                onAdd={(res) => this.addItem({ item })}
+            />
+        )
+    }
 
-//     orderListAnimation() {
+    renderOrder({ item, index }) {
+        return (
+            <SelectedItem
+                key={item.key}
+                data={item}
+                onAdd={() => {
+                    console.log('selected item add')
+                }}
+                onReduce={() => {
+                    console.log('selected item reduce')
+                }}
+            ></SelectedItem>
+        )
+    }
 
-//         // LayoutAnimation.configureNext(CustomLayoutAnimation);
-//         // this.setState({
-//         //     isShow: !this.state.isShow,\
-//         // })
+    orderListAnimation() {
+        let isShow = this.state.isShow
 
-//         let isShow = this.state.isShow
-//         // this.setState({
-//         // });
-//         LayoutAnimation.configureNext({
-//             duration: 1300, //持续时间
-//             create: { // 视图创建
-//                 type: LayoutAnimation.Types.easeInEaseOut,
-//                 property: LayoutAnimation.Properties.opacity,// opacity, scaleXY
-//             },
-//             update: { // 视图更新
-//                 type: LayoutAnimation.Types.easeInEaseOut,
-//             },
-//         }, () => {
-//             console.log('end')
-//             this.setState({
-//                 showCover: !isShow,
-//             });
-//         });
+        console.log(this.state.fadeAnim)
 
-//         // isShow = false
-//         // isShow = true
-//         this.setState({
-//             isShow: !isShow,
-//             showCover: true
-//         });
-//     }
+        Animated.timing(
+            this.state.fadeAnim, {
+                duration: 400,
+                toValue: !isShow ? 1 : 0
+            }
+        ).start(() => {
+            console.log(isShow)
+            this.setState({
+                showCover: !isShow
+            });
+        });
 
-//     render() {
-//         let pic = require('./assets/images/sample.jpg')
-//         let pic2 = {
-//             uri: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
-//         }
-//         let allItems = [
-//             {
-//                 key: '1',
-//                 source: pic,
-//                 title: '巧克力蛋糕',
-//                 volume: 12,
-//                 price: 12,
-//                 like: 12
-//             },
-//             {
-//                 key: '2',
-//                 source: pic2,
-//                 title: '网络图片',
-//                 volume: 12,
-//                 price: 12,
-//                 like: 12
-//             },
-//             {
-//                 key: '3',
-//                 source: pic2,
-//                 title: '网络图片',
-//                 volume: 12,
-//                 price: 12
-//             },
-//             {
-//                 key: '4',
-//                 source: pic2,
-//                 title: '网络图片',
-//                 volume: 125,
-//                 price: 12,
-//                 like: 12
-//             },
-//             {
-//                 key: '5',
-//                 source: pic2,
-//                 title: '网络图片',
-//                 volume: 121,
-//                 price: 12,
-//                 like: 12
-//             }
-//         ]
+        // isShow = false
+        // isShow = true
+        this.setState({
+            isShow: !isShow,
+            showCover: true
+        });
+    }
 
-//         return (
-//             <View style={styles.pageContainer}>
-//                 <View style={styles.flowContainer}>
-//                     <FlatList
-//                         style={styles.classList}
-//                         data={this.state.classList}
-//                         renderItem={({ item }) =>
-//                             <View style={styles.classItemContainer}>
-//                                 <Text style={styles.classItem}>{item.title}</Text>
-//                             </View>
-//                         }
-//                     />
-//                     <FlatList
-//                         style={styles.itemList}
-//                         data={allItems}
-//                         renderItem={({ item }) => this.renderItem({ item })}
-//                     />
-//                 </View>
+    render() {
+        let pic = require('./assets/images/sample.jpg')
+        let pic2 = {
+            uri: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
+        }
+        let allItems = [
+            {
+                key: '1',
+                source: pic,
+                title: '巧克力蛋糕',
+                volume: 12,
+                price: 12,
+                like: 12
+            },
+            {
+                key: '2',
+                source: pic2,
+                title: '网络图片',
+                volume: 12,
+                price: 12,
+                like: 12
+            },
+            {
+                key: '3',
+                source: pic2,
+                title: '网络图片',
+                volume: 12,
+                price: 12
+            },
+            {
+                key: '4',
+                source: pic2,
+                title: '网络图片',
+                volume: 125,
+                price: 12,
+                like: 12
+            },
+            {
+                key: '5',
+                source: pic2,
+                title: '网络图片',
+                volume: 121,
+                price: 12,
+                like: 12
+            }
+        ]
 
-//                 <TouchableWithoutFeedback
-//                     onPress={() => {
-//                         this.orderListAnimation()
-//                     }}
-//                 >
-//                     {/* <View style={[styles.cover, { display: this.state.isShow ? 'flex' : 'none' }]}></View> */}
-//                     <View style={[styles.cover, { opacity: this.state.isShow ? 1 : 0, display: this.state.showCover ? 'flex' : 'none' }]}></View>
-//                 </TouchableWithoutFeedback>
+        return (
+            <View style={styles.pageContainer}>
+                <View style={styles.flowContainer}>
+                    <FlatList
+                        style={styles.classList}
+                        data={this.state.classList}
+                        renderItem={({ item }) =>
+                            <View style={styles.classItemContainer}>
+                                <Text style={styles.classItem}>{item.title}</Text>
+                            </View>
+                        }
+                    />
+                    <FlatList
+                        style={styles.itemList}
+                        data={allItems}
+                        renderItem={({ item }) => this.renderItem({ item })}
+                    />
+                </View>
 
-//                 <View style={[styles.bottomList, { height: this.state.isShow ? this.state.showH : this.state.hiddenH }]}>
-//                     <View style={styles.bottomListTitleBar}>
-//                         <Text style={styles.bottomListTitle}>已选商品</Text>
-//                         <Text style={styles.bottomListClear}>清空购物车</Text>
-//                     </View>
-//                     <FlatList
-//                         style={styles.orderList}
-//                         data={this.state.orderList}
-//                         renderItem={this.renderOrder}
-//                         extraData={this.state}
-//                     />
-//                 </View>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        this.orderListAnimation()
+                    }}
+                >
+                    {/* <View style={[styles.cover, { display: this.state.isShow ? 'flex' : 'none' }]}></View> */}
+                    <Animated.View style={[
+                        styles.cover,
+                        {
+                            opacity: this.state.fadeAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0, 0.7] //线性插值，0对应60，0.6对应30，1对应0
+                            }), display: this.state.showCover ? 'flex' : 'none'
+                        }
+                    ]}>
+                    </Animated.View>
+                </TouchableWithoutFeedback>
 
-//                 <TouchableWithoutFeedback
-//                     onPress={() => {
-//                         this.orderListAnimation()
-//                     }}>
-//                     <View style={styles.bottomActionBar}>
-//                         <View style={styles.bottomLogo}></View>
-//                         <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
-//                             <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
-//                             <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
-//                         </View>
-//                         <TouchableWithoutFeedback>
-//                             {/* <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
-//                                 <Text style={styles.bottomBarCountTitle}>结算</Text>
-//                             </View> */}
-//                             <LinearGradient
-//                                 style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}
-//                                 colors={['#fecf58', '#fec841']}>
-//                                 <Text style={styles.bottomBarCountTitle}>结算</Text>
-//                             </LinearGradient>
-//                         </TouchableWithoutFeedback>
-//                     </View>
-//                 </TouchableWithoutFeedback>
-//             </View>
-//         );
-//     }
-// }
+                <Animated.View style={[styles.bottomList, {
+                    height: this.state.fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [52, 300] //线性插值，0对应60，0.6对应30，1对应0
+                    }),
+                }]}>
+                    <View style={styles.bottomListTitleBar}>
+                        <Text style={styles.bottomListTitle}>已选商品</Text>
+                        <Text style={styles.bottomListClear}>清空购物车</Text>
+                    </View>
+                    <FlatList
+                        style={styles.orderList}
+                        data={this.state.orderList}
+                        renderItem={this.renderOrder}
+                        extraData={this.state}
+                    />
+                </Animated.View>
+
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        this.orderListAnimation()
+                    }}>
+                    <View style={styles.bottomActionBar}>
+                        <View style={styles.bottomLogo}></View>
+                        <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
+                            <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
+                            <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
+                        </View>
+                        <TouchableWithoutFeedback>
+                            {/* <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
+                                <Text style={styles.bottomBarCountTitle}>结算</Text>
+                            </View> */}
+                            <LinearGradient
+                                style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}
+                                colors={['#fecf58', '#fec841']}>
+                                <Text style={styles.bottomBarCountTitle}>结算</Text>
+                            </LinearGradient>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
+    cover: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        left: 0,
+        top: -20,
+        backgroundColor: 'black',
+        opacity: 0,
+        display: 'none'
+        // backgroundColor: 'rgba(0, 0, 0, 0.8)'
+    },
     pageContainer: {
         backgroundColor: "transparent",
         position: "absolute",
@@ -404,17 +428,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 31,
         color: '#666666',
-    },
-    cover: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        left: 0,
-        top: 0,
-        backgroundColor: 'black',
-        opacity:0,
-        display:'none'
-        // backgroundColor: 'rgba(0, 0, 0, 0.8)'
     },
     bottomBarTotalPrice: {
         color: '#fff',
