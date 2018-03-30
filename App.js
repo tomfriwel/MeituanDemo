@@ -41,7 +41,7 @@ export default StackNavigator(
         initialRouteName: 'Home',
         /* The header config from HomeScreen is now here */
         navigationOptions: {
-            headerTitle:<LogoTitle />,
+            headerTitle: <LogoTitle />,
             headerStyle: {
                 backgroundColor: '#aa5100',
             },
@@ -49,6 +49,8 @@ export default StackNavigator(
             headerTitleStyle: {
                 fontWeight: 'bold',
             },
+            // headerBackTitle: 'back haha',
+            headerBackImage: require('./assets/images/icon.png')
         },
     }
 )
