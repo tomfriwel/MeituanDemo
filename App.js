@@ -7,5 +7,17 @@
 
 import { StackNavigator } from 'react-navigation'
 import Shop from './components/pages/Shop'
+import AnimationTest from './components/pages/AnimationTest'
+import BillDetail from './components/pages/BillDetail'
 
-export default Shop
+export default StackNavigator({
+    Home: {
+        screen: Shop,
+    },
+    AnimationTest: {
+        screen: AnimationTest,
+    },
+    BillDetail: {
+        screen: BillDetail,
+    },
+})

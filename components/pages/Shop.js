@@ -71,7 +71,10 @@ export default class App extends Component {
 
     // 结算
     count() {
-        
+        this.props.navigation.navigate('BillDetail', {
+            itemId: 86,
+            title: 'anything you want here',
+          })
     }
 
     addItem({ item }) {
@@ -218,7 +221,7 @@ export default class App extends Component {
                 <TouchableOpacity
                     style={styles.bottomBarCount}
                     onPress={()=>{
-
+                        this.count()
                     }}
                 >
                     <LinearGradient
@@ -386,7 +389,7 @@ const styles = StyleSheet.create({
         width: window.width,
         left: 0,
         top: 20,
-        height: window.height - 20,
+        height: window.height - 20-64,
         // backgroundColor: 'red'
     },
     flowContainer: {
