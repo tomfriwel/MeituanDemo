@@ -36,6 +36,7 @@ export default class App extends Component {
         hiddenH: 52,
         showH: 300,
         minimum: 20, //起送价
+        express: 6, //起送价
         orderList: [],
         classList: [
             {
@@ -67,6 +68,10 @@ export default class App extends Component {
     //         fadeAnim: new Animated.Value(0.0),
     //     };
     // }
+
+    count() {
+        
+    }
 
     addItem({ item }) {
         let obj
@@ -194,7 +199,7 @@ export default class App extends Component {
 
     renderBottomLogo() {
         let colors = ['#959595', '#6D6D6D']
-        if(this.state.total>0) {
+        if (this.state.total > 0) {
             colors = ['#FFDA88', '#FDC147']
         }
         return (
@@ -209,12 +214,19 @@ export default class App extends Component {
     renderCountButton() {
         if (this.state.total > this.state.minimum) {
             return (
-                <LinearGradient
-                    // , { display: this.state.total > 0 ? 'flex' : 'none' }
-                    style={[styles.bottomBarCount, {}]}
-                    colors={['#fecf58', '#fec841']}>
-                    <Text style={[styles.bottomBarCountTitle, { color: '#333431' }]}>结算</Text>
-                </LinearGradient>
+                <TouchableOpacity
+                    style={styles.bottomBarCount}
+                    onPress={()=>{
+
+                    }}
+                >
+                    <LinearGradient
+                        // , { display: this.state.total > 0 ? 'flex' : 'none' }
+                        style={[styles.bottomBarCount, {}]}
+                        colors={['#fecf58', '#fec841']}>
+                        <Text style={[styles.bottomBarCountTitle, { color: '#333431' }]}>结算</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
             )
         }
         else {
@@ -340,7 +352,7 @@ export default class App extends Component {
                         {this.renderBottomLogo()}
                         <View style={[styles.bottomBarTotalPriceWrapper, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
                             <Text style={styles.bottomBarTotalPrice}>{'￥' + this.state.total}</Text>
-                            <Text style={styles.bottomBarTotalPriceInfo}>另需配送费￥5</Text>
+                            <Text style={styles.bottomBarTotalPriceInfo}>{this.state.express > 0 ? '另需配送费￥' + this.state.express : '免配送费'}</Text>
                         </View>
                         <TouchableWithoutFeedback>
                             {/* <View style={[styles.bottomBarCount, { display: this.state.total > 0 ? 'flex' : 'none' }]}>
