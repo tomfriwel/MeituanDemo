@@ -50,7 +50,11 @@ export default StackNavigator(
                 fontWeight: 'bold',
             },
             // headerBackTitle: 'back haha',
-            headerBackImage: require('./assets/images/icon.png')
+            // headerBackImage: require('./assets/images/icon.png')
         },
+    },
+    {
+      mode: 'modal',
+      headerMode: 'none',
     }
 )
