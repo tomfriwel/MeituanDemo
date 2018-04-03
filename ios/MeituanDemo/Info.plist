@@ -30,13 +30,13 @@
 		<dict>
 			<key>localhost</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
 				<key>NSAllowsArbitraryLoads</key>
 				<true/>
 				<key>NSAllowsArbitraryLoadsInWebContent</key>
 				<true/>
 				<key>NSAllowsLocalNetworking</key>
+				<true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
 		</dict>
