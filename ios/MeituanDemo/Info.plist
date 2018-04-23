@@ -26,10 +26,10 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
+		<!-- <key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
-			<dict>
+			<dict> -->
 				<key>NSAllowsArbitraryLoads</key>
 				<true/>
 				<key>NSAllowsArbitraryLoadsInWebContent</key>
@@ -38,8 +38,8 @@
 				<true/>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
-			</dict>
-		</dict>
+			<!-- </dict>
+		</dict> -->
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
