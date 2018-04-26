@@ -10,6 +10,11 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
+/*
+    volume: 销量
+    like: 赞
+ */
+
 export default class ShopItem extends Component {
     constructor(props) {
         super(props)
@@ -33,7 +38,7 @@ export default class ShopItem extends Component {
                 <TouchableOpacity
                     style={styles.itemActionWrapper}
                     onPress={()=>{
-                        this.props.data.onAdd({item:this.props.data.title})
+                        this.props.onAdd({item:this.props.data.title})
                     }}>
                     <LinearGradient
                         style={styles.itemAction}
