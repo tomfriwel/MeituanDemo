@@ -12,6 +12,7 @@ import {
     View,
     Image,
     FlatList,
+    SectionList,
     Alert,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -34,7 +35,8 @@ const window = Dimensions.get('window');
 export default class App extends Component {
     state = {
         // loading: false,
-        allItems:[],
+        allItems: [],
+        classifyItems: [],
         fadeAnim: new Animated.Value(0.0),
         total: 0,
         isShow: false,
@@ -44,29 +46,10 @@ export default class App extends Component {
         minimum: 20, //起送价
         express: 6, //起送价
         orderList: [],
-        classList: [
-            {
-                key: '1',
-                title: '开胃冷菜'
-            },
-            {
-                key: '2',
-                title: '开胃冷菜'
-            },
-            {
-                key: '3',
-                title: '开胃冷菜'
-            },
-            {
-                key: '4',
-                title: '开胃冷菜'
-            },
-            {
-                key: '5',
-                title: '开胃冷菜'
-            }
-        ]
+        classList: []
     }
+
+    shopItemList = null
 
     // constructor(props) {
     //     super(props);
@@ -80,7 +63,7 @@ export default class App extends Component {
         this.props.navigation.navigate('BillDetail', {
             itemId: 86,
             title: 'anything you want here',
-          })
+        })
     }
 
     addItem({ item }) {
@@ -222,7 +205,7 @@ export default class App extends Component {
             return (
                 <TouchableOpacity
                     style={styles.bottomBarCount}
-                    onPress={()=>{
+                    onPress={() => {
                         this.count()
                     }}
                 >
@@ -249,86 +232,67 @@ export default class App extends Component {
 
     loadData() {
         this.setState({
-            loading:true
+            loading: true
         })
 
         net.get({
-            url:api.shop.getItems
-        })
-        .then(res=>{
+            url: api.shop.getItems
+        }).then(res => {
             console.log('res:')
             console.log(res)
             // allItems = res
 
-            res.map(item=>{
-                item.key = item.id+''
+            res.map(item => {
+                item.key = item.id + ''
                 return item
             })
 
+            let items = {}
+            let classList = []
+
+            res.forEach(ele => {
+                if (!items[ele.classId]) {
+                    items[ele.classId] = []
+                    classList.push({
+                        key: ele.classId + '',
+                        id: ele.classId,
+                        title: ele.classTitle
+                    })
+                }
+                items[ele.classId].push(ele)
+            });
+
+            console.log(items)
+            console.log(classList)
+
+            let classifyItems = []
+
+            for (let key in items) {
+                classifyItems.push({
+                    title: items[key][0].classTitle,
+                    data: items[key]
+                })
+            }
+
+            console.log(classifyItems)
+
             this.setState({
-                loading:false,
-                allItems:res
+                loading: false,
+                allItems: res,
+                classList: classList,
+                classifyItems: classifyItems
             })
-        }).catch(res=>{
+        }).catch(res => {
             console.log('res:')
             console.log(res)
             this.setState({
-                loading:false
+                loading: false
             })
         })
     }
 
     componentWillMount() {
-        console.log('componentWillMount')
-
-        console.log(this.state)
-
         this.loadData()
-
-        // this.setState({
-        //     allItems:[
-        //         {
-        //             key: '1',
-        //             image: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg",
-        //             title: '巧克力蛋糕',
-        //             volume: 12,
-        //             price: 12,
-        //             like: 12
-        //         },
-        //         {
-        //             key: '2',
-        //             image: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg",
-        //             title: '网络图片',
-        //             volume: 12,
-        //             price: 12,
-        //             like: 12
-        //         },
-        //         // {
-        //         //     key: '3',
-        //         //     source: pic2,
-        //         //     title: '网络图片',
-        //         //     volume: 12,
-        //         //     price: 12
-        //         // },
-        //         // {
-        //         //     key: '4',
-        //         //     source: pic2,
-        //         //     title: '网络图片',
-        //         //     volume: 125,
-        //         //     price: 12,
-        //         //     like: 12
-        //         // },
-        //         // {
-        //         //     key: '5',
-        //         //     source: pic2,
-        //         //     title: '网络图片',
-        //         //     volume: 121,
-        //         //     price: 12,
-        //         //     like: 12
-        //         // }
-        //     ]
-        // })
-
     }
 
     render() {
@@ -351,12 +315,23 @@ export default class App extends Component {
                             </View>
                         }
                     />
-                    <FlatList
+                    {/* <FlatList
                         style={styles.itemList}
                         data={this.state.allItems}
                         extraData={this.state}
                         renderItem={({ item }) => this.renderShopItem({ item })}
-                    />
+                    /> */}
+                    <SectionList
+                        style={styles.itemList}
+                        ref={(list) => { this.shopItemList = list }}
+                        renderItem={({ item, index, section }) => this.renderShopItem({ item })}
+                        renderSectionHeader={({ section: { title } }) => <Text style={{ fontWeight: 'bold' }}>{title}</Text>}
+                        // sections={[
+                        //     { title: 'Title1', data: ['item1', 'item2'] },
+                        //     { title: 'Title2', data: ['item3', 'item4'] },
+                        //     { title: 'Title3', data: ['item5', 'item6'] },
+                        // ]}
+                        sections={this.state.classifyItems} />
                 </View>
 
                 <TouchableWithoutFeedback
@@ -398,6 +373,11 @@ export default class App extends Component {
 
                 <TouchableWithoutFeedback
                     onPress={() => {
+                        this.shopItemList.scrollToLocation({
+                            itemIndex: 0,
+                            sectionIndex: 0,
+                        })
+                        console.log(1111)
                         this.orderListAnimation()
                     }}>
                     <View style={styles.bottomActionBar}>
@@ -552,8 +532,8 @@ const styles = StyleSheet.create({
         // backgroundColor: '#aa7723'
     },
     switchBar: {
-        height:41,
-        width:'100%',
+        height: 41,
+        width: '100%',
         backgroundColor: '#fafafa'
     }
 });
