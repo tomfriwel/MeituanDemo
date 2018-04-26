@@ -24,12 +24,17 @@ import AnimationTest from './AnimationTest'
 import LinearGradient from 'react-native-linear-gradient'
 import ShopHeader from '../ShopHeader'
 
+import api from '../../utils/api'
+import net from '../../utils/net'
+
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
 // export default AnimationTest
 export default class App extends Component {
     state = {
+        // loading: false,
+        allItems:[],
         fadeAnim: new Animated.Value(0.0),
         total: 0,
         isShow: false,
@@ -179,12 +184,8 @@ export default class App extends Component {
     renderShopItem({ item, index }) {
         return (
             <ShopItem
-                key={item.key}
-                source={item.source}
-                title={item.title}
-                volume={item.volume}
-                price={item.price}
-                like={item.like}
+                key={item.id}
+                data={item}
                 onAdd={(res) => this.addItem({ item })}
             />
         )
@@ -246,52 +247,95 @@ export default class App extends Component {
         }
     }
 
+    loadData() {
+        this.setState({
+            loading:true
+        })
+
+        net.get({
+            url:api.shop.getItems
+        })
+        .then(res=>{
+            console.log('res:')
+            console.log(res)
+            // allItems = res
+
+            res.map(item=>{
+                item.key = item.id+''
+                return item
+            })
+
+            this.setState({
+                loading:false,
+                allItems:res
+            })
+        }).catch(res=>{
+            console.log('res:')
+            console.log(res)
+            this.setState({
+                loading:false
+            })
+        })
+    }
+
+    componentWillMount() {
+        console.log('componentWillMount')
+
+        console.log(this.state)
+
+        this.loadData()
+
+        // this.setState({
+        //     allItems:[
+        //         {
+        //             key: '1',
+        //             image: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg",
+        //             title: '巧克力蛋糕',
+        //             volume: 12,
+        //             price: 12,
+        //             like: 12
+        //         },
+        //         {
+        //             key: '2',
+        //             image: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg",
+        //             title: '网络图片',
+        //             volume: 12,
+        //             price: 12,
+        //             like: 12
+        //         },
+        //         // {
+        //         //     key: '3',
+        //         //     source: pic2,
+        //         //     title: '网络图片',
+        //         //     volume: 12,
+        //         //     price: 12
+        //         // },
+        //         // {
+        //         //     key: '4',
+        //         //     source: pic2,
+        //         //     title: '网络图片',
+        //         //     volume: 125,
+        //         //     price: 12,
+        //         //     like: 12
+        //         // },
+        //         // {
+        //         //     key: '5',
+        //         //     source: pic2,
+        //         //     title: '网络图片',
+        //         //     volume: 121,
+        //         //     price: 12,
+        //         //     like: 12
+        //         // }
+        //     ]
+        // })
+
+    }
+
     render() {
         let pic = require('../../assets/images/sample.jpg')
         let pic2 = {
             uri: "https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
         }
-        let allItems = [
-            {
-                key: '1',
-                source: pic,
-                title: '巧克力蛋糕',
-                volume: 12,
-                price: 12,
-                like: 12
-            },
-            {
-                key: '2',
-                source: pic2,
-                title: '网络图片',
-                volume: 12,
-                price: 12,
-                like: 12
-            },
-            {
-                key: '3',
-                source: pic2,
-                title: '网络图片',
-                volume: 12,
-                price: 12
-            },
-            {
-                key: '4',
-                source: pic2,
-                title: '网络图片',
-                volume: 125,
-                price: 12,
-                like: 12
-            },
-            {
-                key: '5',
-                source: pic2,
-                title: '网络图片',
-                volume: 121,
-                price: 12,
-                like: 12
-            }
-        ]
 
         return (
             <View style={styles.pageContainer}>
@@ -309,7 +353,8 @@ export default class App extends Component {
                     />
                     <FlatList
                         style={styles.itemList}
-                        data={allItems}
+                        data={this.state.allItems}
+                        extraData={this.state}
                         renderItem={({ item }) => this.renderShopItem({ item })}
                     />
                 </View>

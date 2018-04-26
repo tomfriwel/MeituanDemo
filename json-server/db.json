@@ -1,19 +1,12 @@
 {
-    "posts": [
-      {
-        "id": 1,
-        "title": "json-server",
-        "author": "typicode"
-      }
-    ],
-    "comments": [
-      {
-        "id": 1,
-        "body": "some comment",
-        "postId": 1
-      }
-    ],
-    "profile": {
-      "name": "typicode"
+  "items": [
+    {
+      "id": 1,
+      "title": "巧克力蛋糕",
+      "volume": 12,
+      "price": 12,
+      "like": 12,
+      "image":"https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
     }
-  }
+  ]
+}

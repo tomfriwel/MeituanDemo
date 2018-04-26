@@ -1,3 +1,5 @@
+// 商品
+
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -16,20 +18,22 @@ export default class ShopItem extends Component {
         return (
             <View style={styles.container}>
                 <Image
-                    source={this.props.source}
+                    source={{
+                        uri: this.props.data.image
+                    }}
                     style={styles.image}
                 />
                 <View style={styles.info}>
-                    <Text style={styles.itemTitle}>{this.props.title}</Text>
-                    <Text style={styles.itemVolume}>月售{this.props.volume}   赞{this.props.like}</Text>
-                    <Text style={styles.itemPrice}>¥{this.props.price}</Text>
+                    <Text style={styles.itemTitle}>{this.props.data.title}</Text>
+                    <Text style={styles.itemVolume}>月售{this.props.data.volume}   赞{this.props.data.like}</Text>
+                    <Text style={styles.itemPrice}>¥{this.props.data.price}</Text>
                 </View>
                 <View style={styles.itemAction}></View>
 
                 <TouchableOpacity
                     style={styles.itemActionWrapper}
                     onPress={()=>{
-                        this.props.onAdd({item:this.props.title})
+                        this.props.data.onAdd({item:this.props.data.title})
                     }}>
                     <LinearGradient
                         style={styles.itemAction}
