@@ -22,6 +22,7 @@ import ShopItem from '../ShopItem'
 import SelectedItem from '../SelectedItem'
 import AnimationTest from './AnimationTest'
 import LinearGradient from 'react-native-linear-gradient'
+import ShopHeader from '../ShopHeader'
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -294,6 +295,8 @@ export default class App extends Component {
 
         return (
             <View style={styles.pageContainer}>
+                {/* <View style={styles.switchBar}></View> */}
+                <ShopHeader></ShopHeader>
                 <View style={styles.flowContainer}>
                     <FlatList
                         style={styles.classList}
@@ -388,8 +391,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: window.width,
         left: 0,
-        top: 20,
-        height: window.height - 20-64,
+        top: 0,
+        height: window.height,
+        // height: window.height - 20-64,
         // backgroundColor: 'red'
     },
     flowContainer: {
@@ -501,5 +505,10 @@ const styles = StyleSheet.create({
         height: 51,
         borderRadius: 25.5,
         // backgroundColor: '#aa7723'
+    },
+    switchBar: {
+        height:41,
+        width:'100%',
+        backgroundColor: '#fafafa'
     }
 });

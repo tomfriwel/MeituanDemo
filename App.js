@@ -41,9 +41,10 @@ export default StackNavigator(
         initialRouteName: 'Home',
         /* The header config from HomeScreen is now here */
         navigationOptions: {
+            header: null,
             headerTitle: <LogoTitle />,
             headerStyle: {
-                backgroundColor: '#aa5100',
+                backgroundColor: '#fafafa',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
