@@ -174,6 +174,14 @@ export default class App extends Component {
         )
     }
 
+    renderShopItemHeader({ title }) {
+        return (
+            <View style={styles.shopItemHeader}>
+                <Text style={styles.shopItemHeaderText}>{title}</Text>
+            </View>
+        )
+    }
+
     // 购物车item
     renderOrder({ item, index }) {
         return (
@@ -267,9 +275,11 @@ export default class App extends Component {
 
             let classifyItems = []
 
+            // 转为sectionlist 的数据形式
             for (let key in items) {
                 classifyItems.push({
                     title: items[key][0].classTitle,
+                    id: key,
                     data: items[key]
                 })
             }
@@ -310,9 +320,30 @@ export default class App extends Component {
                         style={styles.classList}
                         data={this.state.classList}
                         renderItem={({ item }) =>
-                            <View style={styles.classItemContainer}>
-                                <Text style={styles.classItem}>{item.title}</Text>
-                            </View>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+                                    console.log(item)
+                                    let sectionIndex = 0
+
+                                    for(let i in this.state.classifyItems) {
+                                        let ele = this.state.classifyItems[i]
+                                        if(item.id == ele.id) {
+                                            sectionIndex = i
+                                            break
+                                        }
+                                    }
+
+                                    this.shopItemList.scrollToLocation({
+                                        itemIndex: 0,
+                                        sectionIndex: sectionIndex,
+                                        viewOffset:37,
+                                    })
+                                }}
+                            >
+                                <View style={styles.classItemContainer}>
+                                    <Text style={styles.classItem}>{item.title}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         }
                     />
                     {/* <FlatList
@@ -325,7 +356,7 @@ export default class App extends Component {
                         style={styles.itemList}
                         ref={(list) => { this.shopItemList = list }}
                         renderItem={({ item, index, section }) => this.renderShopItem({ item })}
-                        renderSectionHeader={({ section: { title } }) => <Text style={{ fontWeight: 'bold' }}>{title}</Text>}
+                        renderSectionHeader={({ section: { title } }) => this.renderShopItemHeader({ title })}
                         // sections={[
                         //     { title: 'Title1', data: ['item1', 'item2'] },
                         //     { title: 'Title2', data: ['item3', 'item4'] },
@@ -373,11 +404,6 @@ export default class App extends Component {
 
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        this.shopItemList.scrollToLocation({
-                            itemIndex: 0,
-                            sectionIndex: 0,
-                        })
-                        console.log(1111)
                         this.orderListAnimation()
                     }}>
                     <View style={styles.bottomActionBar}>
@@ -419,14 +445,14 @@ const styles = StyleSheet.create({
         top: 0,
         height: window.height,
         // height: window.height - 20-64,
-        // backgroundColor: 'red'
+        backgroundColor: '#fff'
     },
     flowContainer: {
         flex: 1,
-        // backgroundColor: 'red',
+        backgroundColor: 'red',
         alignContent: 'center',
         flexDirection: 'row',
-        height: window.height - 52,
+        height: window.height - 52 - 104,
     },
     classList: {
         flexGrow: 0,
@@ -446,7 +472,9 @@ const styles = StyleSheet.create({
     },
     itemList: {
         height: '100%',
+        backgroundColor: 'blue',
         // backgroundColor:'#eee'
+        height: window.height - 52 - 204,
     },
     orderList: {
         width: '100%',
@@ -535,5 +563,15 @@ const styles = StyleSheet.create({
         height: 41,
         width: '100%',
         backgroundColor: '#fafafa'
+    },
+    shopItemHeader: {
+        backgroundColor: '#fff',
+        height: 37,
+    },
+    shopItemHeaderText: {
+        color: '#333',
+        fontWeight: 'bold',
+        lineHeight: 37,
+        fontSize: 14
     }
 });
