@@ -20,6 +20,7 @@ import {
     LayoutAnimation
 } from 'react-native';
 import ShopItem from '../ShopItem'
+import ShopItemClass from '../ShopItemClass'
 import SelectedItem from '../SelectedItem'
 import AnimationTest from './AnimationTest'
 import LinearGradient from 'react-native-linear-gradient'
@@ -174,6 +175,33 @@ export default class App extends Component {
         )
     }
 
+    // 分类item
+    renderClassItem({ item }) {
+        return (
+            <ShopItemClass
+                data={item}
+                onClick={(res) => {
+                    console.log(item)
+                    let sectionIndex = 0
+
+                    for (let i in this.state.classifyItems) {
+                        let ele = this.state.classifyItems[i]
+                        if (item.id == ele.id) {
+                            sectionIndex = i
+                            break
+                        }
+                    }
+
+                    this.shopItemList.scrollToLocation({
+                        itemIndex: 0,
+                        sectionIndex: sectionIndex,
+                        viewOffset: 37,
+                    })
+                }}
+            ></ShopItemClass>
+        )
+    }
+
     renderShopItemHeader({ title }) {
         return (
             <View style={styles.shopItemHeader}>
@@ -319,31 +347,31 @@ export default class App extends Component {
                     <FlatList
                         style={styles.classList}
                         data={this.state.classList}
-                        renderItem={({ item }) =>
-                            <TouchableWithoutFeedback
-                                onPress={() => {
-                                    console.log(item)
-                                    let sectionIndex = 0
+                        renderItem={({ item }) => this.renderClassItem({ item })
+                            // <TouchableWithoutFeedback
+                            //     onPress={() => {
+                            //         console.log(item)
+                            //         let sectionIndex = 0
 
-                                    for(let i in this.state.classifyItems) {
-                                        let ele = this.state.classifyItems[i]
-                                        if(item.id == ele.id) {
-                                            sectionIndex = i
-                                            break
-                                        }
-                                    }
+                            //         for(let i in this.state.classifyItems) {
+                            //             let ele = this.state.classifyItems[i]
+                            //             if(item.id == ele.id) {
+                            //                 sectionIndex = i
+                            //                 break
+                            //             }
+                            //         }
 
-                                    this.shopItemList.scrollToLocation({
-                                        itemIndex: 0,
-                                        sectionIndex: sectionIndex,
-                                        viewOffset:37,
-                                    })
-                                }}
-                            >
-                                <View style={styles.classItemContainer}>
-                                    <Text style={styles.classItem}>{item.title}</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
+                            //         this.shopItemList.scrollToLocation({
+                            //             itemIndex: 0,
+                            //             sectionIndex: sectionIndex,
+                            //             viewOffset:37,
+                            //         })
+                            //     }}
+                            // >
+                            //     <View style={styles.classItemContainer}>
+                            //         <Text style={styles.classItem}>{item.title}</Text>
+                            //     </View>
+                            // </TouchableWithoutFeedback>
                         }
                     />
                     {/* <FlatList
@@ -449,10 +477,10 @@ const styles = StyleSheet.create({
     },
     flowContainer: {
         flex: 1,
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         alignContent: 'center',
         flexDirection: 'row',
-        height: window.height - 52 - 104,
+        height: window.height - 52,
     },
     classList: {
         flexGrow: 0,
@@ -472,9 +500,9 @@ const styles = StyleSheet.create({
     },
     itemList: {
         height: '100%',
-        backgroundColor: 'blue',
+        // backgroundColor: 'blue',
         // backgroundColor:'#eee'
-        height: window.height - 52 - 204,
+        height: window.height - 52 - 104,
     },
     orderList: {
         width: '100%',
