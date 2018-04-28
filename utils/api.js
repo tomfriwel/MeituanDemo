@@ -1,4 +1,4 @@
-const serverUrl = 'http://localhost:3000'
+const serverUrl = 'http://192.168.5.38:3000'
 
 const shop = {
     getItems: '/items'

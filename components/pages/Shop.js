@@ -19,6 +19,7 @@ import {
     Animated,
     LayoutAnimation
 } from 'react-native';
+
 import ShopItem from '../ShopItem'
 import ShopItemClass from '../ShopItemClass'
 import SelectedItem from '../SelectedItem'
@@ -34,6 +35,13 @@ const window = Dimensions.get('window');
 
 // export default AnimationTest
 export default class App extends Component {
+    // static navigationOptions = ({ navigation }) => {
+    //     const { params } = navigation.state;
+
+    //     return {
+    //         header: null
+    //     }
+    // };
     state = {
         // loading: false,
         allItems: [],
@@ -62,8 +70,7 @@ export default class App extends Component {
     // 结算
     count() {
         this.props.navigation.navigate('BillDetail', {
-            itemId: 86,
-            title: 'anything you want here',
+            orderList: this.state.orderList
         })
     }
 

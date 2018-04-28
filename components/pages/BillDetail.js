@@ -13,6 +13,7 @@ import {
     Button
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
+import BillDetailItem from '../BillDetailItem'
 
 
 const Dimensions = require('Dimensions');
@@ -64,8 +65,29 @@ export default class AnimationTest extends Component {
         super(props)
     }
 
+    renderItem({ item }) {
+        return (
+            <BillDetailItem
+                key={item.id}
+                data={item}
+                onAdd={(res) => this.addItem({ item })}
+            />
+        )
+    }
+
     render() {
         const { params } = this.props.navigation.state
+        let orderList = params.orderList
+
+        console.log(orderList)
+
+        let listItems = []
+
+        orderList.forEach(ele => {
+            listItems.push(
+                this.renderItem({item:ele.item})
+            )
+        });
 
         return (
             <View style={styles.pageContainer}>
@@ -74,6 +96,7 @@ export default class AnimationTest extends Component {
                     title="Update the title"
                     onPress={() => this.props.navigation.setParams({ title: 'Updated!' })}
                 />
+                {listItems}
             </View>
         );
     }
@@ -81,7 +104,7 @@ export default class AnimationTest extends Component {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        backgroundColor: "transparent",
+        backgroundColor: "#fff",
         position: "absolute",
         width: window.width,
         left: 0,
