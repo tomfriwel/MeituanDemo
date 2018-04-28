@@ -68,7 +68,7 @@ export default class AnimationTest extends Component {
     renderItem({ item }) {
         return (
             <BillDetailItem
-                key={item.id}
+                key={item.item.id}
                 data={item}
                 onAdd={(res) => this.addItem({ item })}
             />
@@ -85,7 +85,7 @@ export default class AnimationTest extends Component {
 
         orderList.forEach(ele => {
             listItems.push(
-                this.renderItem({item:ele.item})
+                this.renderItem({item:ele})
             )
         });
 
