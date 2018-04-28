@@ -74,6 +74,16 @@ export default class App extends Component {
         })
     }
 
+    // 清空购物车
+    clearOrderList() {
+        this.setState({
+            orderList: [],
+            total: 0
+        }, () => {
+            this.orderListAnimation()
+        })
+    }
+
     addItem({ item }) {
         let obj
         let { orderList } = this.state
@@ -403,6 +413,8 @@ export default class App extends Component {
                         sections={this.state.classifyItems} />
                 </View>
 
+                {/* <View style={styles.animationContainer}> */}
+
                 <TouchableWithoutFeedback
                     onPress={() => {
                         this.orderListAnimation()
@@ -429,7 +441,17 @@ export default class App extends Component {
                 }]}>
                     <View style={styles.bottomListTitleBar}>
                         <Text style={styles.bottomListTitle}>已选商品</Text>
-                        <Text style={styles.bottomListClear}>清空购物车</Text>
+
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                console.log('clear')
+                                this.clearOrderList()
+                            }}
+                        >
+                            <View>
+                                <Text style={styles.bottomListClear}>清空购物车</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                     <FlatList
                         style={styles.orderList}
@@ -439,6 +461,8 @@ export default class App extends Component {
                         extraData={this.state}
                     />
                 </Animated.View>
+                {/* </View> */}
+
 
                 <TouchableWithoutFeedback
                     onPress={() => {
@@ -474,6 +498,14 @@ const styles = StyleSheet.create({
         opacity: 0,
         display: 'none'
         // backgroundColor: 'rgba(0, 0, 0, 0.8)'
+    },
+    animationContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        left: 0,
+        top: 0,
+        // backgroundColor: 'red'
     },
     pageContainer: {
         backgroundColor: "transparent",
