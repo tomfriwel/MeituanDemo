@@ -46,7 +46,7 @@ export default class App extends Component {
         // loading: false,
         allItems: [],
         classifyItems: [],
-        fadeAnim: new Animated.Value(0.0),
+        fadeAnim: null,
         total: 0,
         isShow: false,
         showCover: false,
@@ -338,6 +338,9 @@ export default class App extends Component {
 
     componentWillMount() {
         this.loadData()
+        this.setState({
+            fadeAnim: new Animated.Value(0.0)
+        })
     }
 
     render() {
