@@ -8,6 +8,16 @@
       "like": 121,
       "classId":1,
       "classTitle":"甜品",
+      "additions": [
+        {
+          "title":"辣度",
+          "items":[
+            "微辣",
+            "中辣",
+            "特辣"
+          ]
+        }
+      ],
       "image":"https://www.bing.com/az/hprichbg/rb/TulipsEquinox_EN-US11642351862_400x240.jpg"
     },
     {

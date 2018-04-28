@@ -20,6 +20,20 @@ export default class ShopItem extends Component {
         super(props)
     }
     render() {
+
+        let textNode
+
+        if(this.props.data.additions) {
+            textNode = (
+                <Text style={styles.itemActionTextLong}>选规格</Text>
+            )
+        }
+        else {
+            textNode = (
+                <Text style={styles.itemActionText}>+</Text>
+            )
+        }
+
         return (
             <View style={styles.container}>
                 <Image
@@ -43,7 +57,8 @@ export default class ShopItem extends Component {
                     <LinearGradient
                         style={styles.itemAction}
                         colors={['#fecf58', '#fec02a']}>
-                        <Text style={styles.itemActionText}>+</Text>
+                        {textNode}
+                        {/* <Text style={styles.itemActionText}>{this.props.data.additions?'选规格':'+'}</Text> */}
                     </LinearGradient>
                 </TouchableOpacity>
             </View>
@@ -88,12 +103,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 10,
         bottom: 0,
-        width: 26,
+        minWidth: 26,
         height: 26,
         // backgroundColor: '#FECF58'
     },
     itemAction: {
-        width: 26,
+        minWidth: 26,
         height: 26,
         borderRadius: 13,
         flex: 1,
@@ -104,6 +119,14 @@ const styles = StyleSheet.create({
         height: 26,
         color: '#333333',
         fontSize: 22,
+        lineHeight: 25
+    },
+    itemActionTextLong: {
+        paddingLeft:8,
+        paddingRight:8,
+        height: 26,
+        color: '#333333',
+        fontSize: 13,
         lineHeight: 25
     }
 })
