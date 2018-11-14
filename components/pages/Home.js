@@ -13,6 +13,8 @@ import {
     Button
 } from 'react-native';
 
+import api from '../../utils/test-api'
+import net from '../../utils/net'
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -25,13 +27,31 @@ export default class Home extends Component {
         super(props)
     }
 
-    // renderItem({ item }) {
-    //     return (
-    //         <Button>
+    loadData() {
 
-    //         </Button>
-    //     )
-    // }
+        net.get({
+            url: api.wechat.test
+        }).then(res => {
+            console.log('res:')
+            console.log(res)
+            this.setState({
+                title: "success"
+            })
+        }).catch(res => {
+            console.log('res:')
+            console.log(res)
+            this.setState({
+                title: "fail:"+JSON.stringify(res)
+            })
+        })
+    }
+
+    componentWillMount() {
+        this.setState({
+            title: "loading"
+        })
+        this.loadData()
+    }
 
     render() {
         return (
