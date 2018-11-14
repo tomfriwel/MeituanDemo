@@ -7,3 +7,5 @@ Meituan app React Native Demo
 ### server
 
 I place sample data in `json-server/db.json`. You can run it with [json-server](https://github.com/typicode/json-server) for local test.
+
+`json-server --watch ./json-server/db.json`
